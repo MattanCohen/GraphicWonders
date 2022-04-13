@@ -53,6 +53,19 @@ void Assignment1::Init()
 	unsigned int texIDs[3] = { 0 , 1, 2};
 	unsigned int slots[3] = { 0 , 1, 2 };
 
+	std::cout << std::endl << std::endl << "**********************************************" << std::endl <<
+		"1. Functional executable Assignment1.cpp - Newton's Fractal in GLSL shaders by Mattan Cohen and Nir Rosental."<< std::endl<<
+		"- Applies Newton's method on az^3 + bz^2 + cz + d where coeffs = (a,b,c,d)" << std::endl <<
+		"- press 1, 2, 3, 4 to select coefficients a, b, c, d(respectively)" << std::endl <<
+		" - press key up and down to append and prepand(respectively) the selected coefficient by 0.01" << std::endl <<
+		"- Press key up and down to append and prepend(respectively) the number of newton's method iterations" << std::endl <<
+		"- Press space key to switch colors pallete" << std::endl <<
+		"- Double press D(*two clicks in a row*) to reset function, iteration number, color, zoom inand movement offset to default:" << std::endl <<
+		"  function to z ^ 3 - 1, iteration number to 0, color to color #1, zoom in to 1, movement to 0 xAxis and 0 yAxis" << std::endl <<
+		"  zoom in to default (1) and" << std::endl <<
+		"- use scroll wheel up to zoom in(until visible ratio) and to print the width of each pixel" << std::endl <<
+		"- click and drag the fractal to move it around"
+		<< std::endl << "**********************************************" << std::endl << std::endl;
 
 	AddShader("shaders/pickingShader");
 	//int myShaderIndex = AddShader("../../shaders/testShader");
