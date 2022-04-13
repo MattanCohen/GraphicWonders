@@ -1,7 +1,9 @@
 /***********************************************************************************************************************************/
 
 
-Special thanks to Tamir Grosinger and Ben Gurion University for making this engine.
+All thanks goes to Tamir Grosinger and Ben Gurion University for making this engine.
+Link to the graphics engine: https://github.com/tamirgrBGU/CG3DBasicEngine.git
+
 
 
 Projects by Matan Cohen: 
