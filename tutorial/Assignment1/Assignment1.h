@@ -15,8 +15,8 @@ public:
 //	Assignment1(float angle,float relationWH,float near, float far);
 	void Init();
 	void Update(const Eigen::Matrix4f& Proj, const Eigen::Matrix4f& View, const Eigen::Matrix4f& Model, unsigned int  shaderIndx, unsigned int shapeIndx);
-	void WhenRotate();
-	void WhenTranslate();
+	void WhenRotate(bool append);
+	void WhenTranslate(bool isXAxis, bool append);
 	void Animate() override;
 	void ScaleAllShapes(float amt, int viewportIndx);
 
@@ -25,6 +25,8 @@ public:
 	void resetCoeffs();
 	void switchColor();
 
+	Eigen::Vector4f move;
+	float zoom;
 	Eigen::Matrix4f colors;
 	Eigen::Vector3cf FindCubicRoots();
 

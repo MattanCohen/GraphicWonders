@@ -30,9 +30,9 @@ int colorInd = 0;
 const int numOfColors = 6;
 
 int pallet[numOfColors][3] = {
-	{ 243,0,13 },
-	{ 12,250,0 },
-	{ 10,0,245 },
+	{ 253,190,23 },
+	{ 12,180,0 },
+	{ 10,0,210 },
 	{ 250,0,247 },
 	{ 235,251,0 },
 	{ 0,220,203 }
@@ -54,13 +54,13 @@ void Assignment1::Init()
 	unsigned int slots[3] = { 0 , 1, 2 };
 
 
-	AddShader("../../shaders/pickingShader");
+	AddShader("shaders/pickingShader");
 	//int myShaderIndex = AddShader("../../shaders/testShader");
 	//int myShaderIndex = AddShader("shaders/assignment1ShaderFirst");
-	int myShaderIndex = AddShader("../../shaders/assignment1Shader");
+	int myShaderIndex = AddShader("shaders/assignment1Shader");
 
-    AddTexture("../../textures/box0.bmp",2);
-    AddTexture("../../textures/grass.bmp", 2);
+    AddTexture("textures/box0.bmp",2);
+    AddTexture("textures/grass.bmp", 2);
 
 	AddMaterial(texIDs,slots, 1);
 	AddMaterial(texIDs+1, slots+1, 1);
@@ -68,15 +68,20 @@ void Assignment1::Init()
 	AddShape(Plane, -1, TRIANGLES,0);
 	SetShapeShader(0,1);
 	SetShapeMaterial(0, 0);
-	// pickedShape = 0;
 	// ShapeTransformation(zTranslate,-5,0);
 	// pickedShape = -1;
 	SetShapeStatic(0);
+	
 	coeffs[0] = 1;
 	coeffs[1] = 0.000001;
 	coeffs[2] = 0.000001;
 	coeffs[3] =  -1;
     
+	for (int i = 0; i < 4; i++) {
+		move[i] = 0;
+	}
+	zoom = 1;
+	
 	roots = FindCubicRoots();
 	
 	switchColor();
@@ -126,7 +131,7 @@ void Assignment1::Update(const Eigen::Matrix4f& Proj, const Eigen::Matrix4f& Vie
 
 	s->Bind();
 	s->SetUniform1f("time",time);
-	s->SetUniform1f("x",x);
+	s->SetUniform1f("x", x);
 	s->SetUniform1f("y",y);
 	s->SetUniformMat4f("Proj", Proj);
 	s->SetUniformMat4f("View", View);
@@ -145,6 +150,9 @@ void Assignment1::Update(const Eigen::Matrix4f& Proj, const Eigen::Matrix4f& Vie
 	//roots = clamp(FindCubicRoots(), -1.0, 1.0);
 	roots = (FindCubicRoots());
 
+	s->SetUniform1f("zoom", zoom);
+	s->SetUniform4f("move", move[0], move[1], 0, 0);
+	
 	s->SetUniform4f("rootsx", roots[0].real(), roots[1].real(), roots[2].real(), 0);
 	s->SetUniform4f("rootsy", roots[0].imag(), roots[1].imag(), roots[2].imag(), 0);
 	s->SetUniform4f("coeffs", coeffs[0].real(), coeffs[1].real(), coeffs[2].real(), coeffs[3].real());
@@ -183,6 +191,12 @@ void Assignment1::resetCoeffs() {
 	coeffs[1] = 0.000001;
 	coeffs[2] = 0.000001;
 	coeffs[3] = -1;
+	zoom = 1;
+	move[0] = 0;
+	move[1] = 0;
+	colorInd = 0;
+	switchColor();
+	IterationNum = 1;
 }
 
 void Assignment1::switchColor() {
@@ -198,20 +212,35 @@ void Assignment1::switchColor() {
 		1, 1, 1, 00;
 	colorInd = (colorInd + 1) % 6;
 }
-void Assignment1::WhenRotate()
+void Assignment1::WhenRotate(bool append)
 {
+	if (append)
+		zoom += 0.01;
+	else
+		if (zoom - 0.01 > 0.005)
+			zoom -= 0.01;
+		else
+			if (zoom - 0.05 > 0.001)
+				zoom -= 0.05;
+	std::cout << "Each pixel original width: " << 1.0 / 800.0 << " decimal or 1/800." << std::endl;
+	float updatedWidth = (1.0 / 800.0) * (1.0 / zoom);
+	std::cout << "Each pixel updated width: " << updatedWidth << std::endl;
 }
 
-void Assignment1::WhenTranslate()
+void Assignment1::WhenTranslate(bool xAxis, bool append)
 {
+	int i = 1;
+	if (xAxis)
+		i = 0;
+	if (append)
+		move[i] += 0.01;
+	else
+		move[i] -= 0.01;
 }
 
 void Assignment1::Animate() {
-    if(isActive)
-	{
-
-	time += 0.01f;
-	}
+    //if(isActive)
+		time += 0.01f;
 }
 
 void Assignment1::ScaleAllShapes(float amt,int viewportIndx)

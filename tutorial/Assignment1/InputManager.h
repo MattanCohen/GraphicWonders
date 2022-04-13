@@ -32,13 +32,14 @@
 			Renderer* rndr = (Renderer*)glfwGetWindowUserPointer(window);
 			rndr->UnPick(2);
 		}
+
 	}
 	
 	void glfw_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	{
 		Renderer* rndr = (Renderer*)glfwGetWindowUserPointer(window);
 		Assignment1* scn = (Assignment1*)rndr->GetScene();
-		
+		/*
 		if (rndr->IsPicked())
 		{
 			rndr->UpdateZpos((int)yoffset);
@@ -48,13 +49,20 @@
 		{
 			rndr->MoveCamera(0, rndr->zTranslate, (float)yoffset);
 		}
-		
+		*/
+		bool append = yoffset < 0;
+		scn->WhenRotate(append);
 	}
 	
 	void glfw_cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 	{
 		Renderer* rndr = (Renderer*)glfwGetWindowUserPointer(window);
 		Assignment1* scn = (Assignment1*)rndr->GetScene();
+
+		float xold = rndr->getXOld();
+		float yold = rndr->getYOld();
+		float xrel = xpos - xold;
+		float yrel = ypos - yold;
 
 		rndr->UpdatePosition((float)xpos,(float)ypos);
 
@@ -67,7 +75,14 @@
 			}
 			else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 			{
-				
+				if (xrel > 0)
+					scn->WhenTranslate(true, true);
+				else
+					scn->WhenTranslate(true, false);
+				if (yrel > 0)
+					scn->WhenTranslate(false, true);
+				else
+					scn->WhenTranslate(false, false);
 				rndr->MouseProccessing(GLFW_MOUSE_BUTTON_LEFT);
 			}
 			else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE && rndr->IsPicked() && rndr->IsMany())

@@ -11,7 +11,8 @@ uniform vec4 rootsx;
 uniform vec4 rootsy;
 uniform vec4 coeffs;
 uniform int IterationNum;
-
+uniform float zoom;
+uniform vec4 move;
 out vec4 Color;
 
 
@@ -76,7 +77,7 @@ bool funcNotZero(vec2 xy){
 void main()
 {
 	int i = 0;
-	vec2 xy = vec2(position0.x,position0.y);
+	vec2 xy = vec2((position0.x  - move[0]) * zoom,(position0.y  + move[1]) * zoom);
 	while (i < IterationNum && funcNotZero(xy)){
 		xy = sub(xy, divide(func(xy),der(xy)));
 		i++;
