@@ -64,9 +64,12 @@ SceneParser::SceneParser(const std::string& fileName, SceneData* data)
             switch(lineCStr[0])
             {
 			
-                case 'e':
-					data->eye = parseVec4(line);			
+			case 'e': {
+					Eigen::Vector4f parsed = parseVec4(line);
+					parsed[3] = 0;
+					data->eye = parsed;
 				break;
+				}
 				case 'a':
 					data->ambient = parseVec4(line);
 				break;
