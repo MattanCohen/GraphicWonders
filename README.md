@@ -22,6 +22,9 @@ Projects by Matan Cohen:
 /***********************************************************************************************************************************/
 
 
+to run download the engine (git repo) from the link on top and change tutorial's folder content to be
+the extracted tutorial.rar given here.
+
 Engine For Animation Course
 Graphic Engine based on Libigl
 
